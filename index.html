@@ -81,6 +81,7 @@
 					border: 1px solid #4dd0e1;
 					box-shadow: 0 0 0 1px #4dd0e1;
 					}
+
     </style>
 
 </head>
@@ -113,7 +114,7 @@
 			<div class="d-flex flex-row mt-7 justify-content-between">
 			  <div class="p-4">
 					<!-- Search form -->
-					<div class="active-pink-3 active-pink-4 mb-4" id='movie-search'>
+					<div class="active-pink-3 active-pink-4 mb-4 rounded-pill" id='movie-search'>
 					  <input class="form-control" id='movie-name' type="text" value = "Black Panther" placeholder="What movie? (e.g. Black Panther)" aria-label="Search">
 					</div>
 				</div>
@@ -128,14 +129,21 @@
 				<div class="p-4">
 					<!-- Search form -->
 					<div class="active-cyan-3 active-cyan-4 mb-4" id='movie-search'>
-					  <input class="form-control" id='day-name' type="text" value = "Thursday" placeholder="What day? (e.g. Thursday)" aria-label="Search">
+					  <input class="form-control" id='day-name' type="text" value = "Thursday, Friday" placeholder="What day? (e.g. Thursday, Friday, etc)" aria-label="Search">
 					</div>
 				</div>
+
+
+
+
+
+
+
 
 			</div>
 
 			<div class="form-check" id="upcoming-movies-check">
-				<input type="checkbox" class="form-check-input" checked="checked">
+				<input type="checkbox" class="form-check-input" id = 'upcoming_checkbox' checked="checked">
 				<label class="form-check-label active" for="exampleCheck1">Only upcoming movies please!</label>
 			</div>
 
@@ -159,8 +167,11 @@
 		<script>
 			var movie_name;
 			var park_name;
+			var day_name_list;
 			var day_name;
+			var check_box_date = "";
 			var url = 'empty';
+			var i;
 	    $(document).ready(function() {
 
 	      function hideScreens() {
@@ -181,7 +192,22 @@
 					clearMarkers();
 					movie_name = $("#movie-name").val();
 					park_name = $("#park-name").val();
-					day_name = $("#day-name").val().substring(0,3);
+					// day_name = $("#day-name").val().substring(0,3);
+					day_name_list = $("#day-name").val().split(',');
+					day_name = "(";
+					for(i=0; i<day_name_list.length; i++)
+					{
+						day_name = day_name + "'" + day_name_list[i].replace(/\s/g, '').substring(0,3) + "',";
+					}
+					day_name = day_name.substring(0, day_name.length - 1) + ")";
+					if(document.getElementById('upcoming_checkbox').checked) {
+						var d = new Date();
+						var d_iso = d.toISOString();
+						check_box_date = d_iso.substring(0, d_iso.length - 1);
+					}
+					else {
+						check_box_date = "";
+					}
 
 					// url = "https://data.cityofchicago.org/resource/7piw-z6r6.json?" + "$WHERE=" +
 					// 	"title=" + "'" + movie_name + "'" + " AND " +
@@ -189,7 +215,7 @@
 					// 	"day=" + "'" + day_name + "'";
 
 					url = "https://data.cityofchicago.org/resource/7piw-z6r6.json";
-					if(movie_name.length > 0 || park_name.length > 0 || day_name.length > 0)
+					if(movie_name.length > 0 || park_name.length > 0 || day_name_list[0] != "")
 					{
 						url = url + "?$WHERE=";
 						if(movie_name.length > 0)
@@ -206,16 +232,28 @@
 								url = url + "park=" + "'" + park_name + "'";
 							}
 						}
-						if(day_name.length > 0)
+						if(day_name_list[0] != "")
 						{
+							// console.log(day_name_list);
 							if(movie_name.length > 0 || park_name.length > 0)
 							{
-								url = url + " AND " + "day=" + "'" + day_name + "'";
+								url = url + " AND " + "day in" + day_name;
 							}
 							else
 							{
-								url = url + "day=" + "'" + day_name + "'";
+								url = url + "day in" + day_name;
 							}
+						}
+						if(check_box_date.length > 0)
+						{
+							url = url + " AND " + "date>" + "'" + check_box_date + "'";
+						}
+					}
+					else {
+						if(check_box_date.length > 0)
+						{
+							url = url + "?$WHERE=";
+							url = url + "date>" + "'" + check_box_date + "'";
 						}
 					}
 				})
@@ -232,8 +270,8 @@
 
 			function getData()
 			{
+				console.log(url);
 				// https://data.cityofchicago.org/resource/7piw-z6r6.json?$WHERE=title='Black Panther' and park='Austin Town Hall' and day='Thu'
-
 					// if(url != 'empty')
 					// {
 						$.get(url,
@@ -248,6 +286,9 @@
 					// url = 'empty';
 
 			}
+
+
+
 
 	  </script>
 
