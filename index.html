@@ -46,7 +46,7 @@
 
 				}
 
-				#submit{
+				#search-button{
 					/* margin: auto; */
 					width: 200px;
 				}
@@ -114,21 +114,21 @@
 			  <div class="p-4">
 					<!-- Search form -->
 					<div class="active-pink-3 active-pink-4 mb-4" id='movie-search'>
-					  <input class="form-control" id='movie-name' type="text" placeholder="What movie? (e.g. Black Panther)" aria-label="Search">
+					  <input class="form-control" id='movie-name' type="text" value = "Black Panther" placeholder="What movie? (e.g. Black Panther)" aria-label="Search">
 					</div>
 				</div>
 
 				<div class="p-4">
 					<!-- Search form -->
 					<div class="active-purple-3 active-purple-4 mb-4" id='movie-search'>
-					  <input class="form-control" id='park-name' type="text" placeholder="Which park? (e.g. Harrison Park)" aria-label="Search">
+					  <input class="form-control" id='park-name' type="text" value = "Austin Town Hall" placeholder="Which park? (e.g. Harrison Park)" aria-label="Search">
 					</div>
 				</div>
 
 				<div class="p-4">
 					<!-- Search form -->
 					<div class="active-cyan-3 active-cyan-4 mb-4" id='movie-search'>
-					  <input class="form-control" id='day-name' type="text" placeholder="What day? (e.g. Thursday)" aria-label="Search">
+					  <input class="form-control" id='day-name' type="text" value = "Thursday" placeholder="What day? (e.g. Thursday)" aria-label="Search">
 					</div>
 				</div>
 
@@ -140,7 +140,7 @@
 			</div>
 
 			<div class="d-flex flex-row mt-5 justify-content-center">
-				<button type="button" class="btn btn-lg btn-success mx-auto" id="submit">Search!</button>
+				<button type="button" class="btn btn-lg btn-success mx-auto" id="search-button">Search!</button>
 			</div>
 
 		</div>
@@ -157,6 +157,10 @@
 
 
 		<script>
+			var movie_name;
+			var park_name;
+			var day_name;
+			var url = 'empty';
 	    $(document).ready(function() {
 
 	      function hideScreens() {
@@ -173,23 +177,83 @@
 	        $(target).show();
 	      });
 
+				$("#search-button").on("click", function(){
+					clearMarkers();
+					movie_name = $("#movie-name").val();
+					park_name = $("#park-name").val();
+					day_name = $("#day-name").val().substring(0,3);
+
+					// url = "https://data.cityofchicago.org/resource/7piw-z6r6.json?" + "$WHERE=" +
+					// 	"title=" + "'" + movie_name + "'" + " AND " +
+					// 	"park=" + "'" + park_name + "'" + " AND " +
+					// 	"day=" + "'" + day_name + "'";
+
+					url = "https://data.cityofchicago.org/resource/7piw-z6r6.json";
+					if(movie_name.length > 0 || park_name.length > 0 || day_name.length > 0)
+					{
+						url = url + "?$WHERE=";
+						if(movie_name.length > 0)
+						{
+							url = url + "title=" + "'" + movie_name + "'"
+						}
+						if(park_name.length > 0)
+						{
+							if(movie_name.length > 0)
+							{
+								url = url + " AND " + "park=" + "'" + park_name + "'";
+							}
+							else{
+								url = url + "park=" + "'" + park_name + "'";
+							}
+						}
+						if(day_name.length > 0)
+						{
+							if(movie_name.length > 0 || park_name.length > 0)
+							{
+								url = url + " AND " + "day=" + "'" + day_name + "'";
+							}
+							else
+							{
+								url = url + "day=" + "'" + day_name + "'";
+							}
+						}
+					}
+				})
 	    });
+
+			function clearMarkers(){
+				var i;
+				for(i = 0; i < markers.length; i++)
+				{
+					markers[i].setMap(null);
+				}
+				markers = [];
+			}
 
 			function getData()
 			{
-				$.get("https://data.cityofchicago.org/resource/7piw-z6r6.json?$limit=5",
-		        function (data) {
-		        $.each(data, function (i,v) {
-		          createMarker(v);
+				// https://data.cityofchicago.org/resource/7piw-z6r6.json?$WHERE=title='Black Panther' and park='Austin Town Hall' and day='Thu'
 
-		        });   // end of the callback function and parameter list for $.each
-		      }); //  end of the callback function and parameter list for $.get
+					// if(url != 'empty')
+					// {
+						$.get(url,
+								function (data) {
+								$.each(data, function (i,v) {
+									createMarker(v);
+									// console.log(v);
+
+								});   // end of the callback function and parameter list for $.each
+							}); //  end of the callback function and parameter list for $.get
+					// }
+					// url = 'empty';
+
 			}
 
 	  </script>
 
 	  <script>
 	      var map;
+				var markers = [];
         function initMap() {
 					var chicago = {lat: 41.881832, lng: -87.623177};
        	 map = new google.maps.Map(document.getElementById('map'), {
@@ -197,32 +261,26 @@
          center: chicago
        	 	});
 		 		 }
-
-					 getData();
+					 // getData();
 
 
 				 function createMarker(record)
 				 {
 					 var lat_long = {lat: parseFloat(record.location.latitude), lng: parseFloat(record.location.longitude)};
+					 var cc;
+					 if(record.cc == "N")
+					 {
+						 cc = "Closed-captioning is not available";
+					 }
+					 else {
+					 	cc = "Closed-captioning is available";
+					 }
 					 var contentString = '<div id="contentt">'+
 	             '<div id="siteNotice">'+
 	             '</div>'+
-	             '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-	             '<div id="bodyContent">'+
-	             '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-	             'sandstone rock formation in the southern part of the '+
-	             'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-	             'south west of the nearest large town, Alice Springs; 450&#160;km '+
-	             '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-	             'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-	             'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-	             'Aboriginal people of the area. It has many springs, waterholes, '+
-	             'rock caves and ancient paintings. Uluru is listed as a World '+
-	             'Heritage Site.</p>'+
-	             '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-	             'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-	             '(last visited June 22, 2009).</p>'+
-	             '</div>'+
+	             '<h2 id="firstHeading" class="firstHeading">' + record.park + " - " + record.park_address +'</h2>'+
+							 '<h4 id="secondHeading" class="secondHeading">' + record.title + " (" + record.rating +")" + " on " + record.date.split('T')[0] + " (" + record.day + ")" + '</h4>'+
+							 '<h6 id="thirdHeading" class="thirdHeading">' + cc + '</h6>'+
 	             '</div>';
 
 	         var infowindow = new google.maps.InfoWindow({
@@ -232,11 +290,12 @@
 	         var marker = new google.maps.Marker({
 	           position: lat_long,
 	           map: map,
-	           title: 'Uluru (Ayers Rock)'
+	           title: record.park
 	         });
 	         marker.addListener('click', function() {
 	           infowindow.open(map, marker);
 	         });
+					 markers.push(marker);
 				 }
 
 
