@@ -17,6 +17,7 @@ var urlsToCache = [
   '/main.css',
   '/about.html',
   '/buildQuery.js',
+  '/buildMap.js',
   '/sw.js',
   '/pct1.png',
   '/pct2.png',
