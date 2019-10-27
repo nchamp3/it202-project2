@@ -6,108 +6,9 @@
 	<meta name="viewport" content="width=device-width">
 	<title>IT202 Movie Finder</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="main.css">
 	<script src="https://use.fontawesome.com/fda2fc0e03.js"></script>
-
-
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-		}
-
-		html,
-		body {
-			height: 100%;
-			margin: 0;
-			padding: 0;
-		}
-
-		.content {
-			display: none;
-			/* margin: 1em; */
-		}
-
-		.nav-item {
-			cursor: pointer;
-		}
-
-		.display-3 {
-			margin: auto;
-			margin-top: 30px;
-			width: 50%;
-		}
-
-		.mt-7 {
-			margin-top: 10%;
-		}
-
-		#movie-search {
-			width: 400px;
-
-		}
-
-		#search-button {
-			/* margin: auto; */
-			width: 200px;
-		}
-
-		#upcoming-movies-check {
-			float: right;
-			margin-right: 185px;
-			margin-top: -40px;
-		}
-
-		.card{
-			/* width: 18rem; */
-			margin: 10px 10px;
-		}
-
-		.about_container h1{
-			/* width: 100%;
-			margin-left: auto;
-			margin-right: auto; */
-			margin-top: 80px;
-			text-align: center;
-		}
-
-		.about_container p{
-			margin-top: 20px;
-			text-align: center;
-			font-size: 1.25rem;
-    	font-weight: 300;
-		}
-
-		.active-pink-4 input[type=text]:focus:not([readonly]) {
-			border: 1px solid #f48fb1;
-			box-shadow: 0 0 0 1px #f48fb1;
-		}
-
-		.active-pink-3 input[type=text] {
-			border: 1px solid #f48fb1;
-			box-shadow: 0 0 0 1px #f48fb1;
-		}
-
-		.active-purple-4 input[type=text]:focus:not([readonly]) {
-			border: 1px solid #ce93d8;
-			box-shadow: 0 0 0 1px #ce93d8;
-		}
-
-		.active-purple-3 input[type=text] {
-			border: 1px solid #ce93d8;
-			box-shadow: 0 0 0 1px #ce93d8;
-		}
-
-		.active-cyan-4 input[type=text]:focus:not([readonly]) {
-			border: 1px solid #4dd0e1;
-			box-shadow: 0 0 0 1px #4dd0e1;
-		}
-
-		.active-cyan-3 input[type=text] {
-			border: 1px solid #4dd0e1;
-			box-shadow: 0 0 0 1px #4dd0e1;
-		}
-	</style>
-
 </head>
 
 <body onload = "onLoad()">
@@ -140,21 +41,19 @@
 
 		<div class="d-flex flex-row flex-wrap mt-7 justify-content-sm-between justify-content-md-between justify-content-lg-between">
 			<div class="p-4">
-				<!-- Search form -->
+
 				<div class="active-pink-3 active-pink-4 mb-4" id='movie-search'>
 					<input class="form-control" id='movie-name' type="text" value="Black Panther" placeholder="What movie? (e.g. Black Panther)" aria-label="Search">
 				</div>
 			</div>
 
 			<div class="p-4">
-				<!-- Search form -->
 				<div class="active-purple-3 active-purple-4 mb-4" id='movie-search'>
 					<input class="form-control" id='park-name' type="text" value="Austin Town Hall" placeholder="Which park? (e.g. Harrison Park)" aria-label="Search">
 				</div>
 			</div>
 
 			<div class="p-4">
-				<!-- Search form -->
 				<div class="active-cyan-3 active-cyan-4 mb-4" id='movie-search'>
 					<input class="form-control" id='day-name' type="text" value="Thursday, Friday" placeholder="What day? (e.g. Thursday, Friday, etc)" aria-label="Search">
 				</div>
@@ -178,137 +77,23 @@
 	<div class="content" id="cards">
 		<div class="container">
 			<div class="row" id = "card_row">
-
 			</div>
 		</div>
 
 
 	</div>
 
-	<div class="content" id="about">
-
-		<div class="about_container">
-			<h1>IT202 Movie Finder</h1>
-			<p>Neil Champakara
-				<a href="https://github.com/nchamp3/it202-project2" target="_blank"><i class="fa fa-github" style="font-size: 30px;"></i></a>
-			</p>
-		</div>
-		
-	</div>
+	<div class="content" id="about"></div>
 
 
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-
-
-
-	<!-- build query -->
-	<script>
-		var movie_name;
-		var park_name;
-		var day_name_list;
-		var day_name;
-		var check_box_date = "";
-		var url = 'empty';
-		var i;
-		$(document).ready(function() {
-
-			function hideScreens() {
-				$(".content").hide();
-			}
-
-			$(".nav-link").on("click", function() {
-				hideScreens();
-				var target = $(this).attr("id");
-				if (target == '#map' || target == "#cards") {
-					getData();
-				}
-
-				$(target).show();
-			});
-
-			$("#search-button").on("click", function() {
-				clearMarkers();
-
-				movie_name = $("#movie-name").val();
-				park_name = $("#park-name").val();
-				// day_name = $("#day-name").val().substring(0,3);
-				day_name_list = $("#day-name").val().split(',');
-				day_name = "(";
-				for (i = 0; i < day_name_list.length; i++) {
-					day_name = day_name + "'" + day_name_list[i].replace(/\s/g, '').substring(0, 3) + "',";
-				}
-				day_name = day_name.substring(0, day_name.length - 1) + ")";
-				if (document.getElementById('upcoming_checkbox').checked) {
-					var d = new Date();
-					var d_iso = d.toISOString();
-					check_box_date = d_iso.substring(0, d_iso.length - 1);
-				} else {
-					check_box_date = "";
-				}
-
-				// url = "https://data.cityofchicago.org/resource/7piw-z6r6.json?" + "$WHERE=" +
-				// 	"title=" + "'" + movie_name + "'" + " AND " +
-				// 	"park=" + "'" + park_name + "'" + " AND " +
-				// 	"day=" + "'" + day_name + "'";
-
-				url = "https://data.cityofchicago.org/resource/7piw-z6r6.json";
-				if (movie_name.length > 0 || park_name.length > 0 || day_name_list[0] != "") {
-					url = url + "?$WHERE=";
-					if (movie_name.length > 0) {
-						url = url + "title=" + "'" + movie_name + "'"
-					}
-					if (park_name.length > 0) {
-						if (movie_name.length > 0) {
-							url = url + " AND " + "park=" + "'" + park_name + "'";
-						} else {
-							url = url + "park=" + "'" + park_name + "'";
-						}
-					}
-					if (day_name_list[0] != "") {
-						if (movie_name.length > 0 || park_name.length > 0) {
-							url = url + " AND " + "day in" + day_name;
-						} else {
-							url = url + "day in" + day_name;
-						}
-					}
-					if (check_box_date.length > 0) {
-						url = url + " AND " + "date>" + "'" + check_box_date + "'";
-					}
-				} else {
-					if (check_box_date.length > 0) {
-						url = url + "?$WHERE=";
-						url = url + "date>" + "'" + check_box_date + "'";
-					}
-				}
-			})
-		});
-
-		function clearMarkers() {
-			var i;
-			for (i = 0; i < markers.length; i++) {
-				markers[i].setMap(null);
-			}
-			markers = [];
-		}
-
-		function getData() {
-			// https://data.cityofchicago.org/resource/7piw-z6r6.json?$WHERE=title='Black Panther' and park='Austin Town Hall' and day='Thu'
-			$("#card_row").html("");
-
-			$.get(url,
-				function(data) {
-					$.each(data, function(i, v) {
-						createMarker(v);
-						createCard(v);
-						// console.log(v);
-
-					}); // end of the callback function and parameter list for $.each
-				}); //  end of the callback function and parameter list for $.get
-		}
-	</script>
+	<script src="sw.js"></script>
+	<script src="buildQuery.js"></script>
+	<script src="buildMap.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCm_2VTligUDzEEhG-IR-6XaJl2f_f0BDo&callback=initMap" async defer></script>
 
 	<!-- show search on page load -->
 	<script>
@@ -316,104 +101,12 @@
 		function onLoad(){
 			$(".content").hide();
 			$("#search").show();
+			// $("#search").load("search.html");
+
 		}
 
 	</script>
-
-	<!-- create map and cards -->
-	<script>
-		var map;
-		var markers = [];
-		var cc;
-
-		function initMap() {
-			var chicago = {
-				lat: 41.881832,
-				lng: -87.623177
-			};
-			map = new google.maps.Map(document.getElementById('map'), {
-				zoom: 6,
-				center: chicago
-			});
-		}
-		// getData();
-
-		function createCard(record){
-
-
-			$("#card_row").append('<div class=\"card col-12 col-sm-6 col-lg-3\">' +
-				'<div class=\"card-body\">' +
-				'<h5 class=\"card-title\">' + record.title + " (" + record.rating + ")" + '</h5>' +
-				'<h6 class=\"card-subtitle mb-2 text-muted\">' + record.park + " - " + record.park_address + '</h6>' +
-				'<h6 class=\"card-subtitle mb-2 text-muted\">' + record.date.split('T')[0] + " (" + record.day + ")" + '</h6>' +
-				'<p class=\"card-text\">' + cc + '</p>' +
-				'</div>' +
-				'</div>'
-		);
-			// $("#card_row").append('<div class=\"card-body\">');
-			// $("#card_row").append('<h5 class=\"card-title\">Card title</h5>');
-			// $("#card_row").append('<h6 class=\"card-subtitle mb-2 text-muted\">Card subtitle</h6>');
-			// $("#card_row").append('<p class=\"card-text\">Some quick example text to build on the card title and make up the bulk of the card\'s content.</p>');
-			// $("#card_row").append('<a href=\"#\" class=\"card-link\">Card link</a>');
-			// $("#card_row").append('<a href=\"#\" class=\"card-link\">Another link</a>');
-			// $("#card_row").append('</div>');
-			// $("#card_row").append('</div>');
-
-
-
-			// <div class="card col-12 col-sm-6 col-lg-3">
-			// 	<div class="card-body">
-			// 		<h5 class="card-title">Card title</h5>
-			// 		<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-			// 		<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-			// 		<a href="#" class="card-link">Card link</a>
-			// 		<a href="#" class="card-link">Another link</a>
-			// 	</div>
-			// </div>
-
-
-
-
-
-
-		}
-
-
-		function createMarker(record) {
-			var lat_long = {
-				lat: parseFloat(record.location.latitude),
-				lng: parseFloat(record.location.longitude)
-			};
-			if (record.cc == "N") {
-				cc = "Closed-captioning is not available";
-			} else {
-				cc = "Closed-captioning is available";
-			}
-			var contentString = '<div id="contentt">' +
-				'<div id="siteNotice">' +
-				'</div>' +
-				'<h2 id="firstHeading" class="firstHeading">' + record.park + " - " + record.park_address + '</h2>' +
-				'<h4 id="secondHeading" class="secondHeading">' + record.title + " (" + record.rating + ")" + " on " + record.date.split('T')[0] + " (" + record.day + ")" + '</h4>' +
-				'<h6 id="thirdHeading" class="thirdHeading">' + cc + '</h6>' +
-				'</div>';
-
-			var infowindow = new google.maps.InfoWindow({
-				content: contentString
-			});
-
-			var marker = new google.maps.Marker({
-				position: lat_long,
-				map: map,
-				title: record.park
-			});
-			marker.addListener('click', function() {
-				infowindow.open(map, marker);
-			});
-			markers.push(marker);
-		}
-	</script>
-
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCm_2VTligUDzEEhG-IR-6XaJl2f_f0BDo&callback=initMap" async defer></script>
+	
 </body>
 
 </html>
