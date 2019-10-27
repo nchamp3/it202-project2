@@ -1,6 +1,7 @@
 var map;
 var markers = [];
 var cc;
+var numcards = 0;
 
 function initMap() {
   var chicago = {
@@ -15,7 +16,7 @@ function initMap() {
 
 function createCard(record){
 
-  $("#card_row").append('<div class=\"card col-12 col-sm-6 col-lg-3\">' +
+  $("#card_row").append('<div class=\"card col-12 col-sm-6 col-lg-3\" id = \"single_card\">' +
     '<div class=\"card-body\">' +
     '<h5 class=\"card-title\">' + record.title + " (" + record.rating + ")" + '</h5>' +
     '<h6 class=\"card-subtitle mb-2 text-muted\">' + record.park + " - " + record.park_address + '</h6>' +
@@ -25,6 +26,18 @@ function createCard(record){
     '</div>'
   );
 
+  ++numcards;
+
+
+}
+
+function countCards(){
+  $('#num_card_row').append('<h1>' +
+    numcards +
+    ' matches found!' +
+    '</h1> <br>'
+  );
+  numcards = 0;
 }
 
 

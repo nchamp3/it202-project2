@@ -15,7 +15,16 @@ $(document).ready(function() {
     hideScreens();
     var target = $(this).attr("id");
     if (target == '#map' || target == "#cards") {
+      clearMarkers();
       getData();
+    }
+    if(target == '#cards')
+    {
+      countCards();
+    }
+    if(target == "#map")
+    {
+      numcards = 0;
     }
 
     $(target).show();
@@ -26,7 +35,7 @@ $(document).ready(function() {
   });
 
   $("#search-button").on("click", function() {
-    clearMarkers();
+    // clearMarkers();
 
     movie_name = $("#movie-name").val();
     park_name = $("#park-name").val();
@@ -85,9 +94,9 @@ function clearMarkers() {
 }
 
 function getData() {
-  // console.log(url);
   // https://data.cityofchicago.org/resource/7piw-z6r6.json?$WHERE=title='Black Panther' and park='Austin Town Hall' and day='Thu'
   $("#card_row").html("");
+  $("#num_card_row").html("");
   $.get(url,
     function(data) {
       $.each(data, function(i, v) {
