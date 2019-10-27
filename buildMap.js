@@ -8,7 +8,7 @@ function initMap() {
     lng: -87.623177
   };
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 6,
+    zoom: 8,
     center: chicago
   });
 }
