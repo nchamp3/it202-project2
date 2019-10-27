@@ -13,7 +13,7 @@ if ('serviceWorker' in navigator) {
 
 var CACHE_NAME = 'my-site-cache';
 var urlsToCache = [
-  './index',
+  './index.html',
   './main.css',
   './about.html',
   './buildQuery.js',
