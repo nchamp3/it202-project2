@@ -1,0 +1,25 @@
+{
+  "short_name": "Movie Finder",
+  "name": "IT202 Movie Finder",
+  "icons": [
+    {
+      "src": "pct1.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "pct2.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "pct3.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#35898c",
+  "display": "standalone",
+  "theme_color": "#343A40"
+}
