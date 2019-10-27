@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>3 screen app</title>
+	<title>IT202 Movie Finder</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://use.fontawesome.com/fda2fc0e03.js"></script>
 
@@ -62,6 +62,21 @@
 			margin: 10px 10px;
 		}
 
+		.about_container h1{
+			/* width: 100%;
+			margin-left: auto;
+			margin-right: auto; */
+			margin-top: 80px;
+			text-align: center;
+		}
+
+		.about_container p{
+			margin-top: 20px;
+			text-align: center;
+			font-size: 1.25rem;
+    	font-weight: 300;
+		}
+
 		.active-pink-4 input[type=text]:focus:not([readonly]) {
 			border: 1px solid #f48fb1;
 			box-shadow: 0 0 0 1px #f48fb1;
@@ -95,10 +110,10 @@
 
 </head>
 
-<body>
+<body onload = "onLoad()">
 	<!-- navigation bar -->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="#">Home</a>
+	<nav class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-dark bg-dark">
+		<!-- <a class="navbar-brand" href="#">Home</a> -->
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -113,6 +128,9 @@
 				<li class="nav-item">
 					<a class="nav-link" id="#cards">Cards</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="#about">About</a>
+				</li>
 			</ul>
 		</div>
 	</nav>
@@ -120,10 +138,10 @@
 	<div class="content" id="search">
 		<h1 class="display-3">What are you looking for?</h1>
 
-		<div class="d-flex flex-row mt-7 justify-content-between">
+		<div class="d-flex flex-row flex-wrap mt-7 justify-content-sm-between justify-content-md-between justify-content-lg-between">
 			<div class="p-4">
 				<!-- Search form -->
-				<div class="active-pink-3 active-pink-4 mb-4 rounded-pill" id='movie-search'>
+				<div class="active-pink-3 active-pink-4 mb-4" id='movie-search'>
 					<input class="form-control" id='movie-name' type="text" value="Black Panther" placeholder="What movie? (e.g. Black Panther)" aria-label="Search">
 				</div>
 			</div>
@@ -140,16 +158,16 @@
 				<div class="active-cyan-3 active-cyan-4 mb-4" id='movie-search'>
 					<input class="form-control" id='day-name' type="text" value="Thursday, Friday" placeholder="What day? (e.g. Thursday, Friday, etc)" aria-label="Search">
 				</div>
+				<br>
+				<div class="form-check" id="upcoming-movies-check">
+					<input type="checkbox" class="form-check-input" id='upcoming_checkbox' checked="checked">
+					<label class="form-check-label active" for="exampleCheck1">Only upcoming movies please!</label>
+				</div>
 			</div>
 
 		</div>
 
-		<div class="form-check" id="upcoming-movies-check">
-			<input type="checkbox" class="form-check-input" id='upcoming_checkbox' checked="checked">
-			<label class="form-check-label active" for="exampleCheck1">Only upcoming movies please!</label>
-		</div>
-
-		<div class="d-flex flex-row mt-5 justify-content-center">
+		<div class="d-flex flex-row flex-wrap mt-5 justify-content-sm-center justify-content-lg-center">
 			<button type="button" class="btn btn-lg btn-success mx-auto" id="search-button">Search!</button>
 		</div>
 
@@ -161,20 +179,21 @@
 		<div class="container">
 			<div class="row" id = "card_row">
 
-				<!-- <div class="card col-12 col-sm-6 col-lg-3">
-					<div class="card-body">
-						<h5 class="card-title">Card title</h5>
-						<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-						<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						<a href="#" class="card-link">Card link</a>
-						<a href="#" class="card-link">Another link</a>
-					</div>
-				</div> -->
-
 			</div>
 		</div>
 
 
+	</div>
+
+	<div class="content" id="about">
+
+		<div class="about_container">
+			<h1>IT202 Movie Finder</h1>
+			<p>Neil Champakara
+				<a href="https://github.com/nchamp3/it202-project2" target="_blank"><i class="fa fa-github" style="font-size: 30px;"></i></a>
+			</p>
+		</div>
+		
 	</div>
 
 
@@ -184,6 +203,8 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
 
+
+	<!-- build query -->
 	<script>
 		var movie_name;
 		var park_name;
@@ -210,7 +231,7 @@
 
 			$("#search-button").on("click", function() {
 				clearMarkers();
-				
+
 				movie_name = $("#movie-name").val();
 				park_name = $("#park-name").val();
 				// day_name = $("#day-name").val().substring(0,3);
@@ -247,7 +268,6 @@
 						}
 					}
 					if (day_name_list[0] != "") {
-						// console.log(day_name_list);
 						if (movie_name.length > 0 || park_name.length > 0) {
 							url = url + " AND " + "day in" + day_name;
 						} else {
@@ -276,8 +296,6 @@
 
 		function getData() {
 			// https://data.cityofchicago.org/resource/7piw-z6r6.json?$WHERE=title='Black Panther' and park='Austin Town Hall' and day='Thu'
-			// if(url != 'empty')
-			// {
 			$("#card_row").html("");
 
 			$.get(url,
@@ -289,12 +307,20 @@
 
 					}); // end of the callback function and parameter list for $.each
 				}); //  end of the callback function and parameter list for $.get
-			// }
-			// url = 'empty';
-
 		}
 	</script>
 
+	<!-- show search on page load -->
+	<script>
+
+		function onLoad(){
+			$(".content").hide();
+			$("#search").show();
+		}
+
+	</script>
+
+	<!-- create map and cards -->
 	<script>
 		var map;
 		var markers = [];
@@ -386,6 +412,7 @@
 			markers.push(marker);
 		}
 	</script>
+
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCm_2VTligUDzEEhG-IR-6XaJl2f_f0BDo&callback=initMap" async defer></script>
 </body>
 
