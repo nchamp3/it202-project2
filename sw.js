@@ -13,15 +13,15 @@ if ('serviceWorker' in navigator) {
 
 var CACHE_NAME = 'my-site-cache';
 var urlsToCache = [
-  '/',
-  '/main.css',
-  '/about.html',
-  '/buildQuery.js',
-  '/buildMap.js',
-  '/sw.js',
-  '/pct1.png',
-  '/pct2.png',
-  '/pct3.png'
+  './index',
+  './main.css',
+  './about.html',
+  './buildQuery.js',
+  './buildMap.js',
+  './sw.js',
+  './pct1.png',
+  './pct2.png',
+  './pct3.png'
 ];
 
 self.addEventListener('install', function(event) {
